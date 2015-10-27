@@ -15,18 +15,25 @@
 
   //an individual contact component
   var Contact = React.createClass({
+    selectUser: function(){
+      this.props.userSelected(this.props.contact.username);
+    },
     render: function(){
       return (
-        <p>{this.props.contact.username}</p>
+        <p onClick={this.selectUser}>{this.props.contact.username}</p>
       );
     }
   });
 
   //the component for the list for all the contacts
   var ContactContainer = React.createClass({
+    userSelected: function(username){
+      this.props.displayConversation(username);
+    },
     render: function(){
-      contacts = this.props.contacts.map(function(contact){
-        return <Contact key={contact.username} contact={contact} />
+      var userSelected = this.userSelected;
+      var contacts = this.props.contacts.map(function(contact){
+        return <Contact userSelected={userSelected} key={contact.username} contact={contact} />
       })
 
       return (
@@ -70,11 +77,10 @@
     }
   })
 
-  //the component for the entire conversation
-  //and the new message box
+  //the component for the entire conversation with one other user
   var Conversation = React.createClass({
     render: function(){
-      conversation = this.props.conversation.map(function(message){
+      var conversation = this.props.conversation.messages.map(function(message){
         return <p><User key={message.from} message={message} /><Message key={message.text} message={message} /></p>
       })
 
@@ -87,18 +93,49 @@
     }
   })
 
-  var Messenger = React.createClass({
+  //the component for every conversation
+  var Conversations = React.createClass({
     render: function(){
+      var user = this.props.user;
+
+      //finds and displays the conversation that matches 
+      //currently selected user
+      var conversations = this.props.conversations
+        .filter(function(conversation){
+          return (conversation.user === user)
+        })
+        .map(function(conversation){
+          return  <Conversation key={conversation.messages} conversation={conversation} />
+        })
+
       return (
         <div>
-          <ContactContainer contacts={contacts} />
-          <Conversation conversation={messages[1]['Helen of Troy']} />
+          {conversations}
         </div>
       )
     }
   })
 
-
+  //the main component 
+  var Messenger = React.createClass({
+    getInitialState: function(){
+      return {
+        user: conversations[0].user
+      }
+    },
+    displayConversation: function(username){
+      this.setState({user: username});
+    },
+    render: function(){
+      var displayConversation = this.displayConversation;
+      return (
+        <div>
+          <ContactContainer displayConversation={displayConversation} user={this.state.user} contacts={contacts} />
+          <Conversations user={this.state.user} conversations={conversations} />
+        </div>
+      )
+    }
+  })
 
   //sample data
   var contacts = [
@@ -106,15 +143,17 @@
     {"username": "Helen of Troy"}
   ]
 
-  var messages = [
-    {'Shady Pete': [
+  var conversations = [
+    {'user': 'Shady Pete',
+    'messages': [
       {
         'to': 'Shady Pete',
         'from': 'User',
         'text': 'You got the goods?'
       }
     ]},
-    {'Helen of Troy': [
+    {'user': 'Helen of Troy',
+    'messages': [
       {
         'to': 'User',
         'from': 'Helen of Troy',
