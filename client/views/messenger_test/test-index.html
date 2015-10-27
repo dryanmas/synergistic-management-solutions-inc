@@ -7,22 +7,13 @@
 <body>
 
 <div id="messenger">
-    <div id="messages">
-        <div ="log">
-            <p>Helen of Troy: Wassup?</p>
-            <p>User: Not much.</p>
-        </div>
-        <div id="newMessage">
-            <input type='text'></input>
-            <button>Submit</button>
-        </div>
-    </div>
 
 </div>
 
   <script type="text/jsx">
     /** @jsx React.DOM **/
 
+  //an individual contact component
   var Contact = React.createClass({
     render: function(){
       return (
@@ -31,6 +22,7 @@
     }
   });
 
+  //the component for the list for all the contacts
   var ContactContainer = React.createClass({
     render: function(){
       contacts = this.props.contacts.map(function(contact){
@@ -48,28 +40,67 @@
     }
   })
 
-  var Message = React.createClass({
+  //the component for an individual username in a conversation
+  var User = React.createClass({
     render: function(){
       return (
-        <p>{this.props.message.text}</p>
+        <div>{this.props.message.from}: </div>
       );
     }
   })
 
+  //the component for an individual message in a conversation
+  var Message = React.createClass({
+    render: function(){
+      return (
+        <div>{this.props.message.text}</div>
+      );
+    }
+  })
+
+  //the component for submitting a new message
+  var NewMessage = React.createClass({
+    render: function(){
+      return (
+        <div>
+          <input type='text'></input>
+          <button>Send</button>
+        </div>
+      )
+    }
+  })
+
+  //the component for the entire conversation
+  //and the new message box
   var Conversation = React.createClass({
     render: function(){
       conversation = this.props.conversation.map(function(message){
-        return <Message key={message.text} message={message} />
+        return <p><User key={message.from} message={message} /><Message key={message.text} message={message} /></p>
       })
 
       return (
         <div>
           {conversation}
+          <NewMessage /> 
         </div>
         ) 
     }
   })
 
+  var Messenger = React.createClass({
+    render: function(){
+      return (
+        <div>
+          <ContactContainer contacts={contacts} />
+          <Conversation conversation={messages[1]['Helen of Troy']} />
+        </div>
+      )
+    }
+  })
+
+
+
+  //sample data
   var contacts = [
     {"username": "Shady Pete"},
     {"username": "Helen of Troy"}
@@ -85,19 +116,20 @@
     ]},
     {'Helen of Troy': [
       {
-        'to': 'User'
-        'from': 'Helen of Troy'
+        'to': 'User',
+        'from': 'Helen of Troy',
         'text': 'Wassup?'
       },
       {
-        'to': 'Helen of Troy'
-        'from': 'User'
+        'to': 'Helen of Troy',
+        'from': 'User',
         'text': 'Not much.'
       }
     ]}
   ]
 
-  React.renderComponent(<ContactContainer contacts={contacts} />, document.getElementById('messenger'));
+   React.renderComponent(<Messenger />, document.getElementById('messenger'));
+  //React.renderComponent(<ContactContainer contacts={contacts} />, document.getElementById('messenger'));
   </script>
 </body>
 </html>
