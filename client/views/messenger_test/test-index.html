@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://fb.me/react-0.12.2.js"></script>
+        <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+    </head>
+<body>
+
+<div id="messenger">
+    <div id="messages">
+        <div ="log">
+            <p>Helen of Troy: Wassup?</p>
+            <p>User: Not much.</p>
+        </div>
+        <div id="newMessage">
+            <input type='text'></input>
+            <button>Submit</button>
+        </div>
+    </div>
+
+</div>
+
+  <script type="text/jsx">
+    /** @jsx React.DOM **/
+
+  var Contact = React.createClass({
+    render: function(){
+      return (
+        <p>{this.props.contact.username}</p>
+      );
+    }
+  });
+
+  var ContactContainer = React.createClass({
+    render: function(){
+      contacts = this.props.contacts.map(function(contact){
+        return <Contact key={contact.username} contact={contact} />
+      })
+
+      return (
+        <div>
+          <h4>Contacts</h4>
+          <div>
+            {contacts}
+          </div>
+        </div>
+      )
+    }
+  })
+
+  var Message = React.createClass({
+    render: function(){
+      return (
+        <p>{this.props.message.text}</p>
+      );
+    }
+  })
+
+  var Conversation = React.createClass({
+    render: function(){
+      conversation = this.props.conversation.map(function(message){
+        return <Message key={message.text} message={message} />
+      })
+
+      return (
+        <div>
+          {conversation}
+        </div>
+        ) 
+    }
+  })
+
+  var contacts = [
+    {"username": "Shady Pete"},
+    {"username": "Helen of Troy"}
+  ]
+
+  var messages = [
+    {'Shady Pete': [
+      {
+        'to': 'Shady Pete',
+        'from': 'User',
+        'text': 'You got the goods?'
+      }
+    ]},
+    {'Helen of Troy': [
+      {
+        'to': 'User'
+        'from': 'Helen of Troy'
+        'text': 'Wassup?'
+      },
+      {
+        'to': 'Helen of Troy'
+        'from': 'User'
+        'text': 'Not much.'
+      }
+    ]}
+  ]
+
+  React.renderComponent(<ContactContainer contacts={contacts} />, document.getElementById('messenger'));
+  </script>
+</body>
+</html>
