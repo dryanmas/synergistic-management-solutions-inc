@@ -6,6 +6,7 @@ var SignIn = require('./views/signin.jsx');
 var Nav = require('./views/nav.jsx');
 var Landing = require('./views/landing.jsx')
 var AllUsers = require('./views/otherUsers.jsx');
+var Messenger = require('./views/messenger.jsx');
 var Router = require('react-router').Router
 var Route = require('react-router').Route
 var Link = require('react-router').Link
@@ -31,6 +32,7 @@ ReactDOM.render((
   <Router>
     <Route path="/" component={App}>
       <IndexRoute component={Landing} />
+      <Route path="messenger" component={Messenger} />
       <Route path="signin" component={SignIn} />
       <Route path="signup" component={SignUp} />
       <Route path="profile" component={Profile} />

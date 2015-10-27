@@ -15,6 +15,7 @@ var Nav = React.createClass({
           <div className="nav-wrapper light-blue">
             <a href="#" className="brand-logo">PearLern</a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
+              <li><Link to="/messenger">Messenger</Link></li>
               <li><Link to="/profile">My Profile</Link></li>
               <li><Link to="/signin">Login</Link></li>
               <li><Link to="/signup">Register</Link></li>
