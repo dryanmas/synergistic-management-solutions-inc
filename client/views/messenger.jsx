@@ -2,15 +2,9 @@ var React = require('react')
 var $ = require('jquery');
 
 /*TODO
-  [x] fix server
-  [x] test ajax
-    [x] contacts
-    [x] convos
-    [x] submit
   [] learn more about keys
   [] look into console warnings 
-  [] figure out how to pass in otherUser state on redirect 
-  [x] auto rerender page  
+  [] figure out how to pass in otherUser state on redirect  
   [] get current user in a more formalized way
   [] prevent page from breaking if no other users exist
   [] clean up/comment code 
